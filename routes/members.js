@@ -9,7 +9,7 @@ const initialMembers = require('../fixtures/members.json');
 // ───────────────────────────────────────────────────────────
 
 // 1. 複製 initialMembers，不直接改外部陣列
-const members = structuredClone(inirialMembers)
+const members = structuredClone(initialMembers)
 
 // 2. 下一個新增會員要使用的 id
 let nextId = members.length>0? members[members.length-1].id+1 : 1
@@ -57,17 +57,28 @@ const router = express.Router();
 // - 輸入：req.query.level 可帶 'VIP' | 'normal'（選填）
 // - 輸出：200 + [{ id, name, level }, ...]
 // - 提示：filterByQuery(members, req.query)
-/* 作答區
-router.METHOD('PATH', (req, res) => { ... });
-*/
+
+router.get('/', (req, res) => {
+  const filteredMembers = filterByQuery(members, req.query)
+  res.status(200).json(filteredMembers)
+});
+
 
 // GET /:id
 // - 輸入：req.params.id（string，需使用 Number() 轉換）
 // - 輸出：200 + { id, name, level }，或 404 + { error: '會員不存在' }（找不到時）
 // - 提示：members.find，找不到時結果是 undefined
-/* 作答區
-router.METHOD('PATH', (req, res) => { ... });
-*/
+
+router.get('/:id', (req, res) => {
+  const id = Number(req.params.id)
+  const member = members.find(m => m.id === id)
+  if(!member){
+    res.status(404).json({ error: '會員不存在' })
+  }else{
+    res.status(200).json(member)
+  }
+});
+
 
 // ───────────────────────────────────────────────────────────
 // TODO 任務三：POST /

@@ -8,6 +8,11 @@ const swaggerDoc = require('./fixtures/swagger.json');
 
 const app = express();
 
+app.use(cors())
+app.use(express.json())
+
+app.use("/members", membersRouter)
+
 // ───────────────────────────────────────────────────────────
 // TODO 任務六：依序掛上 middleware 與 router（注意順序）
 // ───────────────────────────────────────────────────────────
