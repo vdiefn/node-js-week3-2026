@@ -71,12 +71,12 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   const id = Number(req.params.id)
-  const member = members.find(m => m.id === id)
+  const member = members.find(m => m.id ===id)
   if(!member){
-    res.status(404).json({ error: '會員不存在' })
-  }else{
-    res.status(200).json(member)
+    return res.status(404).json({ error: '會員不存在' })
   }
+
+  res.status(200).json(member)
 });
 
 
@@ -92,6 +92,22 @@ router.get('/:id', (req, res) => {
 /* 作答區
 router.METHOD('PATH', (req, res) => { ... });
 */
+router.post("/", (req, res) => {
+  const validatedBody = validateBody(req.body)
+
+  if(!validatedBody.valid){
+    return res.status(400).json({error: "缺 name 或 level"})
+  }
+
+  const member = {
+    id: nextId,
+    ...req.body
+  }
+
+  members.push(member)
+
+  res.status(201).json(member)
+})
 
 // ───────────────────────────────────────────────────────────
 // TODO 任務四：PUT /:id 和 DELETE /:id
