@@ -130,9 +130,6 @@ router.put("/:id", (req, res) => {
 // - 輸入：req.params.id（string，需 Number() 轉換）
 // - 輸出：204（無 body），或 404 + { error: '會員不存在' }（找不到時）
 // - 提示：members.findIndex 找索引，-1 回應 404；找到索引則 splice 移除，再設定 status 204 並以 .end() 結束回應（204 不帶 body）
-/* 作答區
-router.METHOD('PATH', (req, res) => { ... });
-*/
 router.delete("/:id", (req, res) => {
   const id = Number(req.params.id);
 
